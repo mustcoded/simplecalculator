@@ -2,13 +2,87 @@
 
 import tkinter as tk
 import tkinter.font
+from math import sqrt
+
+from calculate import Calculate
 
 win = tk.Tk()
 win.title('Simple Calculator')
 win.resizable(0,0)
 
-def insert():
-    pass
+data = Calculate()
+operatorFlag = False #this flag control the operator operation
+dataSet = []
+
+def clear():
+    dataSet.clear()
+    entry.set("0")
+
+def insert(elem):
+    global operatorFlag
+    if operatorFlag == False and (len(dataSet)==0):
+        dataSet.append(entry.get())
+        dataSet.append(elem)
+        operatorFlag = True
+    elif operatorFlag == False and (len(dataSet)==1):
+        dataSet.append(elem)
+        operatorFlag = True
+    elif operatorFlag == True and (len(dataSet)==0):
+        dataSet.append(entry.get())
+        dataSet.append(elem)
+    elif len(dataSet) == 2:
+        dataSet.append(entry.get())
+        data.cal(dataSet,entry)
+
+def insertNumber(elem):
+    global operatorFlag
+    if operatorFlag == False:
+        if entry.get() == "0":
+            entry.set(elem)
+        elif len(dataSet) == 1:
+            pass
+        else:
+            entry.set(entry.get()+elem)
+    else:
+        entry.set(elem)
+        operatorFlag = False
+
+def delete():
+    if entry.get() == "0" or len(entry.get()) == 1:
+        entry.set("0")
+    else:
+        entry.set(entry.get()[:len(entry.get())-1])
+
+def otherOp(elem):
+
+    global operatorFlag
+
+    if operatorFlag == False:
+
+        if elem == "1/x":
+            if entry.get() == "0":
+                entry.set(elem)
+            else:
+                entry.set(1/float(entry.get()))
+        elif elem == "x\u00b2":
+            if entry.get() == "0":
+                entry.set(elem)
+            else:
+                entry.set((float(entry.get())**2))
+        elif elem == "\u221Ax\u0305\u0305":
+            if entry.get() == "0":
+                entry.set(elem)
+            else:
+                entry.set((sqrt(float(entry.get()))))
+        operatorFlag = True
+
+    else:
+        if elem == "1/x":
+            entry.set(1/float(entry.get()))
+        elif elem == "x\u00b2":
+            entry.set((float(entry.get())**2))
+        elif elem == "\u221Ax\u0305\u0305":
+            entry.set((sqrt(float(entry.get()))))
 
 entryFrame = tkinter.Frame(win,highlightthickness=1)
 entryFrame.grid(column=0, row=0, padx=5, pady=5)
@@ -20,7 +94,6 @@ calculatorFont = tkinter.font.Font( family = "American Typewriter",
                                  weight = "bold")
 entry_txt = tkinter.Entry(entryFrame, textvariable=entry, font=calculatorFont, justify=tkinter.RIGHT)
 entry_txt.grid(column=0, row=0)
-entry_txt.focus()
 
 frame0 = tkinter.Frame(win)
 frame0.grid(column=0, row=1, padx=3,pady=5)
@@ -28,94 +101,94 @@ frame0.grid(column=0, row=1, padx=3,pady=5)
 frame1 = tkinter.Frame(win)
 frame1.grid(column=0, row=2, padx=3,pady=5)
 
-mcButton = tkinter.Button(frame0, text="MC", width=6, height=1,command=insert)
+mcButton = tkinter.Button(frame0, text="MC", width=6, height=1,command=lambda : insert("MC"))
 mcButton.grid(column=0, row=0, pady=1, padx=1)
 
-mrButton = tkinter.Button(frame0, text="MR",width=6, height=1, command=insert)
+mrButton = tkinter.Button(frame0, text="MR",width=6, height=1, command=lambda : insert("MR"))
 mrButton.grid(column=1, row=0, pady=1, padx=1)
 
-mplusButton = tkinter.Button(frame0, text="M+",width=6, height=1,command=insert)
+mplusButton = tkinter.Button(frame0, text="M+",width=6, height=1,command=lambda : insert("M+"))
 mplusButton.grid(column=2, row=0, pady=1, padx=1)
 
-mminusButton = tkinter.Button(frame0, text="M-",width=6, height=1,command=insert)
+mminusButton = tkinter.Button(frame0, text="M-",width=6, height=1,command=lambda : insert("M-"))
 mminusButton.grid(column=3, row=0, pady=1, padx=1)
 
-msButton = tkinter.Button(frame0, text="MS", width=6, height=1,command=insert)
+msButton = tkinter.Button(frame0, text="MS", width=6, height=1,command=lambda : insert("MS"))
 msButton.grid(column=4, row=0, pady=1, padx=1)
 
-mxButton = tkinter.Button(frame0, text="M*",width=6, height=1,command=insert)
+mxButton = tkinter.Button(frame0, text="M*",width=6, height=1,command=lambda : insert("M*"))
 mxButton.grid(column=5, row=0, pady=1, padx=1)
 
-percentageButton = tkinter.Button(frame1, text="%", width=10, height=3, command=insert)
+percentageButton = tkinter.Button(frame1, text="%", width=10, height=3, command=lambda : insert("%"))
 percentageButton.grid(column=0, row=1, padx=3,pady=3)
 
-ceButton = tkinter.Button(frame1, text="CE",width=10, height=3, command=insert)
+ceButton = tkinter.Button(frame1, text="CE",width=10, height=3, command=lambda : insert("CE"))
 ceButton.grid(column=1, row=1, padx=3,pady=3)
 
-cButton = tkinter.Button(frame1, text="C",width=10, height=3,command=insert)
+cButton = tkinter.Button(frame1, text="C",width=10, height=3,command=lambda : clear())
 cButton.grid(column=2, row=1, padx=3,pady=3)
 
-dButton = tkinter.Button(frame1, text="<-",width=10, height=3,command=insert)
+dButton = tkinter.Button(frame1, text="<-",width=10, height=3,command=lambda : delete())
 dButton.grid(column=3, row=1, padx=3,pady=3)
 
-deButton = tkinter.Button(frame1, text="1/x", width=10, height=3, command=insert)
+deButton = tkinter.Button(frame1, text="1/x", width=10, height=3, command=lambda : otherOp("1/x"))
 deButton.grid(column=0, row=2, padx=3,pady=3)
 
-powButton = tkinter.Button(frame1, text="x\u00b2", width=10, height=3, command=insert)
+powButton = tkinter.Button(frame1, text="x\u00b2", width=10, height=3, command=lambda : otherOp("x\u00b2"))
 powButton.grid(column=1, row=2, padx=3,pady=3)
 
-squareRootButton = tkinter.Button(frame1, text="\u221Ax\u0305\u0305",width=10, height=3,command=insert)
+squareRootButton = tkinter.Button(frame1, text="\u221Ax\u0305\u0305",width=10, height=3,command=lambda : otherOp("\u221Ax\u0305\u0305"))
 squareRootButton.grid(column=2, row=2, padx=3,pady=3)
 
-divideButton = tkinter.Button(frame1, text="\u00F7",width=10, height=3,command=insert)
+divideButton = tkinter.Button(frame1, text="\u00F7",width=10, height=3,command=lambda:insert("\u00F7"))
 divideButton.grid(column=3, row=2, padx=3,pady=3)
 
-sevenButton = tkinter.Button(frame1, text="7", width=10, height=3, command=insert)
+sevenButton = tkinter.Button(frame1, text="7", width=10, height=3, command=lambda:insertNumber("7"))
 sevenButton.grid(column=0, row=3, padx=3,pady=3)
 
-eightButton = tkinter.Button(frame1, text="8", width=10, height=3, command=insert)
+eightButton = tkinter.Button(frame1, text="8", width=10, height=3, command=lambda:insertNumber("8"))
 eightButton.grid(column=1, row=3, padx=3,pady=3)
 
-nineButton = tkinter.Button(frame1, text="9",width=10, height=3,command=insert)
+nineButton = tkinter.Button(frame1, text="9",width=10, height=3,command=lambda:insertNumber("9"))
 nineButton.grid(column=2, row=3, padx=3,pady=3)
 
-timesButton = tkinter.Button(frame1, text="x",width=10, height=3,command=insert)
+timesButton = tkinter.Button(frame1, text="x",width=10, height=3,command=lambda:insert("x"))
 timesButton.grid(column=3, row=3, padx=3,pady=3)
 
-fourButton = tkinter.Button(frame1, text="4", width=10, height=3, command=insert)
+fourButton = tkinter.Button(frame1, text="4", width=10, height=3, command=lambda:insertNumber("4"))
 fourButton.grid(column=0, row=4, padx=3,pady=3)
 
-fiveButton = tkinter.Button(frame1, text="5", width=10, height=3, command=insert)
+fiveButton = tkinter.Button(frame1, text="5", width=10, height=3, command=lambda:insertNumber("5"))
 fiveButton.grid(column=1, row=4, padx=3,pady=3)
 
-sixButton = tkinter.Button(frame1, text="6",width=10, height=3,command=insert)
+sixButton = tkinter.Button(frame1, text="6",width=10, height=3,command=lambda:insertNumber("6"))
 sixButton.grid(column=2, row=4, padx=3,pady=3)
 
-minusButton = tkinter.Button(frame1, text="-" ,width=10, height=3,command=insert)
+minusButton = tkinter.Button(frame1, text="-" ,width=10, height=3,command=lambda:insert("-"))
 minusButton.grid(column=3, row=4, padx=3,pady=3)
 
-oneButton = tkinter.Button(frame1, text="1", width=10, height=3, command=insert)
+oneButton = tkinter.Button(frame1, text="1", width=10, height=3, command=lambda:insertNumber("1"))
 oneButton.grid(column=0, row=5, padx=3,pady=3)
 
-twoButton = tkinter.Button(frame1, text="2", width=10, height=3, command=insert)
+twoButton = tkinter.Button(frame1, text="2", width=10, height=3, command=lambda:insertNumber("2"))
 twoButton.grid(column=1, row=5, padx=3,pady=3)
 
-threeButton = tkinter.Button(frame1, text="3",width=10, height=3,command=insert)
+threeButton = tkinter.Button(frame1, text="3",width=10, height=3,command=lambda:insertNumber("3"))
 threeButton.grid(column=2, row=5, padx=3,pady=3)
 
-plusButton = tkinter.Button(frame1, text="+",width=10, height=3,command=insert)
+plusButton = tkinter.Button(frame1, text="+",width=10, height=3,command=lambda:insert("+"))
 plusButton.grid(column=3, row=5, padx=3,pady=3)
 
-plusminusButton = tkinter.Button(frame1, text="+/-", width=10, height=3, command=insert)
+plusminusButton = tkinter.Button(frame1, text="+/-", width=10, height=3, command=lambda:insert("+/-"))
 plusminusButton.grid(column=0, row=6, padx=3,pady=3)
 
-zeroButton = tkinter.Button(frame1, text="0", width=10, height=3, command=insert)
+zeroButton = tkinter.Button(frame1, text="0", width=10, height=3, command=lambda:insertNumber("0"))
 zeroButton.grid(column=1, row=6, padx=3,pady=3)
 
-dotButton = tkinter.Button(frame1, text=".",width=10, height=3,command=insert)
+dotButton = tkinter.Button(frame1, text=".",width=10, height=3,command=lambda:insert("."))
 dotButton.grid(column=2, row=6, padx=3,pady=3)
 
-equalButton = tkinter.Button(frame1, text="=",width=10, height=3,command=insert)
+equalButton = tkinter.Button(frame1, text="=",width=10, height=3,command=lambda:insert("="))
 equalButton.grid(column=3, row=6, padx=3,pady=3)
 
 win.mainloop()
