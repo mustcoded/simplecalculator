@@ -58,7 +58,11 @@ def delete():
         entry.set(entry.get()[:len(entry.get())-1])
 
 def percent():
-    entry.set(float(entry.get())/100)
+    global operatorFlag
+    pct = float(entry.get())/100
+    entry.set(float(pct))
+    dataSet.clear()
+    dataSet.append(pct)
 
 def otherOp(elem):
 
