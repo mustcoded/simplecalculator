@@ -14,8 +14,12 @@ data = Calculate()
 operatorFlag = False #this flag control the operator operation
 dataSet = []
 
-def clear():
-    dataSet.clear()
+def clear(elem):
+
+    if elem == "All":
+        dataSet.clear()
+    else:
+        dataSet.pop(len(dataSet) - 1)
     entry.set("0")
 
 def insert(elem):
@@ -52,6 +56,9 @@ def delete():
         entry.set("0")
     else:
         entry.set(entry.get()[:len(entry.get())-1])
+
+def percent():
+    entry.set(float(entry.get())/100)
 
 def otherOp(elem):
 
@@ -119,13 +126,13 @@ msButton.grid(column=4, row=0, pady=1, padx=1)
 mxButton = tkinter.Button(frame0, text="M*",width=6, height=1,command=lambda : insert("M*"))
 mxButton.grid(column=5, row=0, pady=1, padx=1)
 
-percentageButton = tkinter.Button(frame1, text="%", width=10, height=3, command=lambda : insert("%"))
+percentageButton = tkinter.Button(frame1, text="%", width=10, height=3, command=lambda : percent())
 percentageButton.grid(column=0, row=1, padx=3,pady=3)
 
-ceButton = tkinter.Button(frame1, text="CE",width=10, height=3, command=lambda : insert("CE"))
+ceButton = tkinter.Button(frame1, text="CE",width=10, height=3, command=lambda : clear("Partial"))
 ceButton.grid(column=1, row=1, padx=3,pady=3)
 
-cButton = tkinter.Button(frame1, text="C",width=10, height=3,command=lambda : clear())
+cButton = tkinter.Button(frame1, text="C",width=10, height=3,command=lambda : clear("All"))
 cButton.grid(column=2, row=1, padx=3,pady=3)
 
 dButton = tkinter.Button(frame1, text="<-",width=10, height=3,command=lambda : delete())
