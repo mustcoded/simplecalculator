@@ -14,8 +14,15 @@ data = Calculate()
 operatorFlag = False #this flag control the operator operation
 dataSet = []
 
-def clear(elem):
+def plusminus():
+    if (entry.get() == "0"):
+        pass
+    else:
+        dataSet.clear()
+        dataSet.append(-float(entry.get()))
+        entry.set(-float(entry.get()))
 
+def clear(elem):
     if elem == "All":
         dataSet.clear()
     else:
@@ -55,12 +62,16 @@ def delete():
     if entry.get() == "0" or len(entry.get()) == 1:
         entry.set("0")
     else:
-        entry.set(entry.get()[:len(entry.get())-1])
+        try:
+            if entry.get().index(".") == -1:
+                pass
+        except:
+            entry.set(entry.get()[:len(entry.get()) - 1])
 
 def percent():
     global operatorFlag
     pct = float(entry.get())/100
-    entry.set(float(pct))
+    entry.set(pct)
     dataSet.clear()
     dataSet.append(pct)
 
@@ -99,7 +110,7 @@ entryFrame = tkinter.Frame(win,highlightthickness=1)
 entryFrame.grid(column=0, row=0, padx=5, pady=5)
 
 # entry number box
-entry = tkinter.StringVar(entryFrame, value='0')
+entry = tkinter.StringVar(entryFrame, value="0")
 calculatorFont = tkinter.font.Font( family = "American Typewriter",
                                  size = 23,
                                  weight = "bold")
@@ -190,7 +201,7 @@ threeButton.grid(column=2, row=5, padx=3,pady=3)
 plusButton = tkinter.Button(frame1, text="+",width=10, height=3,command=lambda:insert("+"))
 plusButton.grid(column=3, row=5, padx=3,pady=3)
 
-plusminusButton = tkinter.Button(frame1, text="+/-", width=10, height=3, command=lambda:insert("+/-"))
+plusminusButton = tkinter.Button(frame1, text="+/-", width=10, height=3, command=lambda:plusminus())
 plusminusButton.grid(column=0, row=6, padx=3,pady=3)
 
 zeroButton = tkinter.Button(frame1, text="0", width=10, height=3, command=lambda:insertNumber("0"))
