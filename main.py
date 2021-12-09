@@ -58,15 +58,15 @@ def insertNumber(elem):
         entry.set(elem)
         operatorFlag = False
 
+def insertDot():
+    if len(entry.get()) > 0 and "." not in entry.get():
+        entry.set(entry.get() + ".")
+
 def delete():
     if entry.get() == "0" or len(entry.get()) == 1:
         entry.set("0")
     else:
-        try:
-            if entry.get().index(".") == -1:
-                pass
-        except:
-            entry.set(entry.get()[:len(entry.get()) - 1])
+        entry.set(entry.get()[:len(entry.get()) - 1])
 
 def percent():
     global operatorFlag
@@ -207,7 +207,7 @@ plusminusButton.grid(column=0, row=6, padx=3,pady=3)
 zeroButton = tkinter.Button(frame1, text="0", width=10, height=3, command=lambda:insertNumber("0"))
 zeroButton.grid(column=1, row=6, padx=3,pady=3)
 
-dotButton = tkinter.Button(frame1, text=".",width=10, height=3,command=lambda:insert("."))
+dotButton = tkinter.Button(frame1, text=".",width=10, height=3,command=lambda:insertDot())
 dotButton.grid(column=2, row=6, padx=3,pady=3)
 
 equalButton = tkinter.Button(frame1, text="=",width=10, height=3,command=lambda:insert("="))
