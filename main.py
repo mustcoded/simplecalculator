@@ -14,6 +14,12 @@ data = Calculate()
 operatorFlag = False #this flag control the operator operation
 dataSet = []
 
+memory = 0
+
+total = []
+total.append(0)
+grandTotalFlag = False
+
 def plusminus():
     if (entry.get() == "0"):
         pass
@@ -28,9 +34,10 @@ def clear(elem):
     else:
         dataSet.pop(len(dataSet) - 1)
     entry.set("0")
+    #total[0] = 0
 
 def insert(elem):
-    global operatorFlag
+    global operatorFlag,total
     if operatorFlag == False and (len(dataSet)==0):
         dataSet.append(entry.get())
         dataSet.append(elem)
@@ -43,7 +50,7 @@ def insert(elem):
         dataSet.append(elem)
     elif len(dataSet) == 2:
         dataSet.append(entry.get())
-        data.cal(dataSet,entry)
+        data.cal(dataSet,entry, total)
 
 def insertNumber(elem):
     global operatorFlag
@@ -106,6 +113,39 @@ def otherOp(elem):
         elif elem == "\u221Ax\u0305\u0305":
             entry.set((sqrt(float(entry.get()))))
 
+
+def memClear():
+    global memory
+    memory = 0
+
+def memRecall():
+    global memory, operatorFlag
+    entry.set(memory)
+    operatorFlag = True
+
+def memAdd():
+    global memory
+    memory += float(entry.get())
+
+def memMinus():
+    global memory
+    memory -= float(entry.get())
+
+def memStore():
+    global memory
+    memory = float(entry.get())
+
+def grandTotal():
+    global total,grandTotalFlag
+    dataSet.clear()
+    entry.set(total[0])
+
+    if grandTotalFlag == False:
+        total[0] = 0
+        grandTotalFlag = True
+    else:
+        grandTotalFlag = False
+
 entryFrame = tkinter.Frame(win,highlightthickness=1)
 entryFrame.grid(column=0, row=0, padx=5, pady=5)
 
@@ -123,22 +163,22 @@ frame0.grid(column=0, row=1, padx=3,pady=5)
 frame1 = tkinter.Frame(win)
 frame1.grid(column=0, row=2, padx=3,pady=5)
 
-mcButton = tkinter.Button(frame0, text="MC", width=6, height=1,command=lambda : insert("MC"))
+mcButton = tkinter.Button(frame0, text="MC", width=6, height=1,command=lambda : memClear())
 mcButton.grid(column=0, row=0, pady=1, padx=1)
 
-mrButton = tkinter.Button(frame0, text="MR",width=6, height=1, command=lambda : insert("MR"))
+mrButton = tkinter.Button(frame0, text="MR",width=6, height=1, command=lambda : memRecall())
 mrButton.grid(column=1, row=0, pady=1, padx=1)
 
-mplusButton = tkinter.Button(frame0, text="M+",width=6, height=1,command=lambda : insert("M+"))
+mplusButton = tkinter.Button(frame0, text="M+",width=6, height=1,command=lambda : memAdd())
 mplusButton.grid(column=2, row=0, pady=1, padx=1)
 
-mminusButton = tkinter.Button(frame0, text="M-",width=6, height=1,command=lambda : insert("M-"))
+mminusButton = tkinter.Button(frame0, text="M-",width=6, height=1,command=lambda : memMinus())
 mminusButton.grid(column=3, row=0, pady=1, padx=1)
 
-msButton = tkinter.Button(frame0, text="MS", width=6, height=1,command=lambda : insert("MS"))
+msButton = tkinter.Button(frame0, text="MS", width=6, height=1,command=lambda : memStore())
 msButton.grid(column=4, row=0, pady=1, padx=1)
 
-mxButton = tkinter.Button(frame0, text="M*",width=6, height=1,command=lambda : insert("M*"))
+mxButton = tkinter.Button(frame0, text="GT",width=6, height=1,command=lambda : grandTotal())
 mxButton.grid(column=5, row=0, pady=1, padx=1)
 
 percentageButton = tkinter.Button(frame1, text="%", width=10, height=3, command=lambda : percent())
