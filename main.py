@@ -31,10 +31,11 @@ def plusminus():
 def clear(elem):
     if elem == "All":
         dataSet.clear()
+        entry.set("0")
     else:
-        dataSet.pop(len(dataSet) - 1)
-    entry.set("0")
-    #total[0] = 0
+        if(len(dataSet) > 0):
+            dataSet.pop(len(dataSet) - 1)
+            entry.set(dataSet.pop(len(dataSet) - 1))
 
 def insert(elem):
     global operatorFlag,total
@@ -160,7 +161,7 @@ entry_txt.grid(column=0, row=0)
 frame0 = tkinter.Frame(win)
 frame0.grid(column=0, row=1, padx=3,pady=5)
 
-frame1 = tkinter.Frame(win)
+frame1 = tkinter.Frame(win, bg="white")
 frame1.grid(column=0, row=2, padx=3,pady=5)
 
 mcButton = tkinter.Button(frame0, text="MC", width=6, height=1,command=lambda : memClear())
