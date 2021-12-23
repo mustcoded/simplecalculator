@@ -6,3 +6,6 @@ Create a UI template for the Calculator, the code is under main.py file. Read al
 
 #Part Two
 Create the calculate module, more explaination here...https://onmouseentered.com/2021/10/28/python-calculator-application-update/
+
+#Part Three
+The final user manual is at this link:-https://onmouseentered.com/2021/12/23/the-completion-of-the-python-calculator-project/
